@@ -9,12 +9,17 @@ def hello_world():
 
     return 'sample test'
 
-@app.route('/fileread')
+@app.route('/')
 def path():
     # f = open("guru99.txt", "w+")
 
     filename = request.args.get('filename')
     linenumber = request.args.get('linenumber')
+
+    try :
+        int(linenumber)
+    except ValueError as verr:
+        return render_template('/error.html', name=linenumber)
 
     if filename == None :
         print('No file Name Given : Reading Default file file1')
@@ -31,6 +36,10 @@ def path():
         for line in filecontent:
                 a.append("{}".format( line.strip()))
         print(linenumber)
+
+        if linenumber == None or linenumber == '':
+            return render_template('/projects.html', name=a[0:100])
+
         return render_template('/projects.html', name=a[0:int(linenumber)])
 
     if filename == "file2" :
@@ -45,6 +54,8 @@ def path():
             content.decode('utf-8', 'ignore')
             a.append(content.decode('utf-8', 'ignore'))
 
+        if linenumber == None or linenumber == '':
+            return render_template('/projects.html', context=a[0:100])
         return render_template('/projects.html' ,context = a[0:int(linenumber)])
 
     if filename == "file3":
@@ -54,7 +65,10 @@ def path():
         a = []
         for line in filecontent:
             a.append("{}".format(line.strip()))
-        print(linenumber)
+
+        if linenumber == None or linenumber == '':
+            return render_template('/projects.html', name=a[0:100])
+
         return render_template('/projects.html', name=a[0:int(linenumber)])
 
     if filename == "file4":
@@ -67,6 +81,9 @@ def path():
         for content in contents:
             content.decode('utf-16', 'ignore')
             a.append(content.decode('utf-16', 'ignore'))
+
+        if linenumber == None or linenumber == '':
+            return render_template('/projects.html', context=a[0:100])
 
         return render_template('/projects.html', context=a[0:int(linenumber)])
 
